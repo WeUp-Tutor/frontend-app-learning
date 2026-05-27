@@ -57,7 +57,9 @@ const Course = ({
   const [weeklyGoalCelebrationOpen, setWeeklyGoalCelebrationOpen] = useState(
     celebrations && !celebrations.streakLengthToCelebrate && celebrations.weeklyGoal,
   );
-  const shouldDisplayLearnerTools = windowWidth >= breakpoints.medium.minWidth;
+
+#  const shouldDisplayLearnerTools = windowWidth >= breakpoints.medium.minWidth;
+  const shouldDisplayLearnerTools = false;
   const daysPerWeek = course?.courseGoals?.selectedGoal?.daysPerWeek;
 
   useEffect(() => {
