@@ -19,27 +19,22 @@ function getSectionProgress(section) {
   if (!section) return 0;
   console.log(section)
 
-  if (typeof section.completionRatio === 'number') {
-    return clamp(Math.round(section.completionRatio * 100));
-  }
+  if (Array.isArray(section.sequenceIds) && section.sequenceIds.length > 0) {
 
-  if (typeof section.progress === 'number') {
-    return clamp(Math.round(section.progress));
-  }
+    console.log('section has sequences')
+    console.log(section.sequenceIds)
+    
+    const sequences = section.sequenceIds
+      .map((id) => sequencesById[id])
+      .filter(Boolean);
 
-  if (
-    typeof section.completedUnits === 'number'
-    && typeof section.totalUnits === 'number'
-    && section.totalUnits > 0
-  ) {
-    return clamp(Math.round((section.completedUnits / section.totalUnits) * 100));
-  }
+    if (sequences.length === 0) return 0;
 
-  if (Array.isArray(section.subsections) && section.subsections.length > 0) {
-    const completed = section.subsections.filter(
+    const completed = sequences.filter(
       (item) => item?.complete === true || item?.completed === true
     ).length;
-    return clamp(Math.round((completed / section.subsections.length) * 100));
+
+    return clamp(Math.round((completed / sequences.length) * 100));
   }
 
   return 0;
