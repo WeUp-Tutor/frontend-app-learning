@@ -169,8 +169,9 @@ const OutlineTab = () => {
             </>
           )}
         </div>
-        {rootCourseId && (
+        {rootCourseId && false && (
           <div className="col col-12 col-md-4">
+0
             <ProctoringInfoPanel />
             { /** Defer showing the goal widget until the ProctoringInfoPanel has resolved or has been determined as
              disabled to avoid components bouncing around too much as screen is rendered */ }
@@ -180,10 +181,15 @@ const OutlineTab = () => {
                 subscribedToReminders={selectedGoal && 'subscribedToReminders' in selectedGoal ? selectedGoal.subscribedToReminders : false}
               />
             )}
+            1
             <CourseTools />
+2
             <CourseOutlineTabNotificationsSlot courseId={courseId} />
+3
             <CourseDates />
+4
             <CourseHandouts />
+5
           </div>
         )}
       </div>
