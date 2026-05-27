@@ -73,6 +73,7 @@ const CourseOutlineTray = () => {
         iconAs={MenuOpenIcon}
         onClick={handleToggleCollapse}
       />
+      <p style={{ color: 'red', lineHeight : 10, padding: 20 }}>Test modification courseOutlineTray</p>
     </div>
   );
 
