@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './custom.scss';
 
 function clamp(value, min = 0, max = 100) {
   return Math.min(Math.max(value, min), max);
@@ -19,11 +20,12 @@ function getSectionProgress(section) {
   if (!section) return 0;
   console.log(section)
 
+
   if (Array.isArray(section.sequenceIds) && section.sequenceIds.length > 0) {
 
     console.log('section has sequences')
     console.log(section.sequenceIds)
-    
+
     const sequences = section.sequenceIds
       .map((id) => sequencesById[id])
       .filter(Boolean);
@@ -40,6 +42,10 @@ function getSectionProgress(section) {
   return 0;
 }
 
+
+
+
+
 export default function CourseHomeSectionProgressSlot({
   expandAll,
   sectionIds,
@@ -50,31 +56,38 @@ export default function CourseHomeSectionProgressSlot({
   }
 
   return (
-    <div className="course-home-section-progress-slot mb-4">
+    <div className="course-home-section-progress-slot">
       {sectionIds.map((sectionId) => {
         const section = sections[sectionId];
         if (!section) return null;
 
         const progress = getSectionProgress(section);
+        const title = section.displayName || section.title || section.name;
+        const isDone = progress === 100;
 
         return (
-          <div key={sectionId} className="mb-3">
-            <div className="d-flex justify-content-between align-items-center mb-1">
-              <span className="small font-weight-bold">
-                {section.displayName || section.title || section.name}
-              </span>
-              <span className="small text-muted">
+          <div key={sectionId} className="section-progress-card mb-3">
+            <div className="d-flex justify-content-between align-items-start gap-3 mb-2">
+              <div>
+                <div className="section-progress-title">{title}</div>
+                {!expandAll && (
+                  <div className="section-progress-status">
+                    {isDone ? 'Section terminée' : 'En cours'}
+                  </div>
+                )}
+              </div>
+
+              <div className="section-progress-badge">
                 {progress}%
-              </span>
+              </div>
             </div>
 
             <div
-              className="progress"
-              style={{ height: '8px' }}
-              aria-label={`Progression de la section ${section.displayName || section.title || section.name}`}
+              className="progress section-progress-bar"
+              aria-label={`Progression de la section ${title}`}
             >
               <div
-                className="progress-bar"
+                className={`progress-bar ${isDone ? 'bg-success' : ''}`}
                 role="progressbar"
                 style={{ width: `${progress}%` }}
                 aria-valuenow={progress}
@@ -82,18 +95,13 @@ export default function CourseHomeSectionProgressSlot({
                 aria-valuemax={100}
               />
             </div>
-
-            {!expandAll && (
-              <div className="small text-muted mt-1">
-                {progress === 100 ? 'Section terminée' : 'En cours'}
-              </div>
-            )}
           </div>
         );
       })}
     </div>
   );
 }
+
 
 CourseHomeSectionProgressSlot.propTypes = {
   expandAll: PropTypes.bool,
