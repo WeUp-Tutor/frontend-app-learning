@@ -177,7 +177,7 @@ const OutlineTab = () => {
 
 
         <div className="col col-12 col-md-6">
-          <CourseHomeSectionsProgressSlot
+          <CourseHomeSectionProgressSlot
             expandAll={expandAll}
             sectionIds={courses[rootCourseId].sectionIds}
             sections={sections}

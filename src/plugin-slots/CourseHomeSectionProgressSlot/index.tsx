@@ -1,4 +1,3 @@
-// src/plugin-slots/CourseHomeSectionProgressSlot/index.jsx
 import React from 'react';
 import PropTypes from 'prop-types';
 
