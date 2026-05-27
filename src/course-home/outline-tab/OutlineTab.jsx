@@ -27,6 +27,8 @@ import WelcomeMessage from './widgets/WelcomeMessage';
 import ProctoringInfoPanel from './widgets/ProctoringInfoPanel';
 import AccountActivationAlert from '../../alerts/logistration-alert/AccountActivationAlert';
 import CourseHomeSectionOutlineSlot from '../../plugin-slots/CourseHomeSectionOutlineSlot';
+import CourseHomeSectionProgressSlot from '../../plugin-slots/CourseHomeSectionProgressSlot';
+
 
 const OutlineTab = () => {
   const intl = useIntl();
@@ -133,7 +135,7 @@ const OutlineTab = () => {
             }}
           />
         </div>
-        <div className="col col-12 col-md-8">
+        <div className="col col-12 col-md-6">
           <AlertList
             topic="outline-course-alerts"
             className="mb-3"
@@ -166,12 +168,25 @@ const OutlineTab = () => {
                 sectionIds={courses[rootCourseId].sectionIds}
                 sections={sections}
               />
+
+
+
             </>
           )}
         </div>
+
+
+        <div className="col col-12 col-md-6">
+          <CourseHomeSectionsProgressSlot
+            expandAll={expandAll}
+            sectionIds={courses[rootCourseId].sectionIds}
+            sections={sections}
+          />
+        </div>
+
+
         {rootCourseId && false && (
           <div className="col col-12 col-md-4">
-0
             <ProctoringInfoPanel />
             { /** Defer showing the goal widget until the ProctoringInfoPanel has resolved or has been determined as
              disabled to avoid components bouncing around too much as screen is rendered */ }
@@ -181,17 +196,13 @@ const OutlineTab = () => {
                 subscribedToReminders={selectedGoal && 'subscribedToReminders' in selectedGoal ? selectedGoal.subscribedToReminders : false}
               />
             )}
-            1
             <CourseTools />
-2
             <CourseOutlineTabNotificationsSlot courseId={courseId} />
-3
             <CourseDates />
-4
             <CourseHandouts />
-5
           </div>
         )}
+
       </div>
     </>
   );
