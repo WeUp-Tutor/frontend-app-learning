@@ -5,6 +5,17 @@
   padding: 0 10px;
 }
 
+
+.global-progress-title {
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-align: center;
+  background-color: $color-tertiary;
+  padding: 0.75rem 1rem;
+  color: $color-surface;
+  border-radius: 0.5rem;
+}
+
 .global-section-progress-card {
   background-color: $color-primary-soft;
   border: 1px solid $color-primary;
@@ -12,11 +23,7 @@
   padding: 1.25rem 1.5rem;
   box-shadow: $shadow-soft;
   margin-bottom: 2.5rem;
-
-  .section-progress-title {
-    font-weight: 600;
-    font-size: 1.05rem;
-  }
+  height: 22px;
 
   .section-progress-badge {
     font-weight: 600;
@@ -101,3 +108,39 @@
     transition: none !important;
   }
 }
+
+
+
+
+// Resume panel 
+#root .course-outline-tab .raised-card {
+  background: $color-primary;
+  border: none;
+  border-radius: 6px;
+  box-shadow: $shadow-card;
+}
+#root .course-outline-tab .raised-card .pgn__card-header-actions a {
+  background: $color-secondary;
+}
+
+
+// left panel
+.collapsible-trigger {
+  background: $color-tertiary;
+  color: $color-surface;
+  border: none;
+}
+
+.collapsible-icon .btn-icon {
+  border-radius: 50%;
+  color: $color-surface;
+  background: $color-secondary;
+}
+.collapsible-icon .btn-icon:hover {
+  background: $color-primary;
+} 
+
+#courseHome-outline .collapsible-trigger .text-success {
+  color: $color-secondary;
+}
+
