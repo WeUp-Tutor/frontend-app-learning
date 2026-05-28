@@ -19,13 +19,11 @@ type Sequence = {
 };
 
 interface Props {
-  expandAll?: boolean;
   sectionIds: string[];
   sections: Record<string, Section>;
 }
 
 const CourseHomeSectionProgressSlot: React.FC<Props> = ({
-  expandAll = false,
   sectionIds,
   sections,
 }) => {
@@ -38,8 +36,68 @@ const CourseHomeSectionProgressSlot: React.FC<Props> = ({
 
   if (!Array.isArray(sectionIds) || !sections || !sequences) { return null; }
 
+
+  // Calcul de la progression globale
+  let totalSeq = 0;
+  let totalCompleteSeq = 0;
+
+  sectionIds.forEach((sectionId) => {
+    const section = sections[sectionId];
+    if (!section || !section.sequenceIds) {
+      return;
+    }
+
+    section.sequenceIds.forEach((seqId) => {
+      const seq = sequences[seqId];
+      if (!seq) {
+        return;
+      }
+      totalSeq += 1;
+      if (seq.complete) {
+        totalCompleteSeq += 1;
+      }
+    });
+  });
+
+  const overallProgress =
+    totalSeq > 0 ? Math.round((totalCompleteSeq / totalSeq) * 100) : 0;
+
+
   return (
     <div className="course-home-section-progress-slot">
+
+      <div className="section-progress-card mb-4">
+        <div className="d-flex justify-content-between align-items-start gap-3 mb-2">
+          <div>
+            <div className="section-progress-title">
+              Progression globale
+            </div>
+            <div className="section-progress-status">
+              {overallProgress === 100 ? 'Cours terminé' : 'En cours'}
+            </div>
+          </div>
+
+          <div className="section-progress-badge">
+            {overallProgress}%
+          </div>
+        </div>
+
+        <div
+          className="progress section-progress-bar"
+          aria-label="Progression globale du cours"
+        >
+          <div
+            className={`progress-bar ${overallProgress === 100 ? 'bg-success' : ''}`}
+            role="progressbar"
+            style={{ width: `${overallProgress}%` }}
+            aria-valuenow={overallProgress}
+            aria-valuemin={0}
+            aria-valuemax={100}
+          />
+        </div>
+      </div>
+
+
       {sectionIds.map((sectionId) => {
 
         const section = sections[sectionId];
