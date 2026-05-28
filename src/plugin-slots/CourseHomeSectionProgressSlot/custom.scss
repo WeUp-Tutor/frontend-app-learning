@@ -124,6 +124,7 @@
 }
 
 
+
 // left panel
 .collapsible-trigger {
   background: $color-tertiary;
@@ -141,7 +142,7 @@
 } 
 
 #courseHome-outline .collapsible-trigger .text-success {
-  color: $color-secondary;
+  color: $color-secondary !important;
 }
 
 .text-dark-500 {
