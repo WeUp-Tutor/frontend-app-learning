@@ -157,26 +157,13 @@ const OutlineTab = () => {
               <UpgradeToShiftDatesAlert model="outline" logUpgradeLinkClick={logUpgradeToShiftDatesLinkClick} />
             </>
           )}
-          <StartOrResumeCourseCard />
           <WelcomeMessage courseId={courseId} nextElementRef={expandButtonRef} />
           {rootCourseId && (
-            <>
-              <div id="expand-button-row" className="row w-100 m-0 mb-3 justify-content-end">
-                <div className="col-12 col-md-auto p-0">
-                  <Button ref={expandButtonRef} variant="outline-primary" block onClick={() => { setExpandAll(!expandAll); }}>
-                    {expandAll ? intl.formatMessage(messages.collapseAll) : intl.formatMessage(messages.expandAll)}
-                  </Button>
-                </div>
-              </div>
-              <CourseHomeSectionOutlineSlot
-                expandAll={expandAll}
-                sectionIds={courses[rootCourseId].sectionIds}
-                sections={sections}
-              />
-
-
-
-            </>
+            <CourseHomeSectionOutlineSlot
+              expandAll={expandAll}
+              sectionIds={courses[rootCourseId].sectionIds}
+              sections={sections}
+            />
           )}
         </div>
 
