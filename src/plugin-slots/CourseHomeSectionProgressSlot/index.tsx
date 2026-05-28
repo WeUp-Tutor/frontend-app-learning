@@ -1,6 +1,7 @@
 import React from 'react';
+import { useModel } from '../../../generic/model-store';
+import { useContextId } from '../../../data/hooks';
 import './custom.scss';
-
 
 type Section = {
   displayName?: string;
@@ -10,57 +11,103 @@ type Section = {
   sequenceIds?: string[];
 };
 
+type Sequence = {
+  displayName?: string;
+  title?: string;
+  name?: string;
+  complete?: boolean;
+};
+
 interface Props {
   expandAll?: boolean;
   sectionIds: string[];
   sections: Record<string, Section>;
 }
 
-
-
-
 const CourseHomeSectionProgressSlot: React.FC<Props> = ({
   expandAll = false,
   sectionIds,
   sections,
 }) => {
-  if (!Array.isArray(sectionIds) || !sections) {
+  const courseId = useContextId();
+  const {
+    courseBlocks: { sequences },
+  } = useModel('outline', courseId) as {
+    courseBlocks: { sequences: Record<string, Sequence> };
+  };
+
+  if (!Array.isArray(sectionIds) || !sections || !sequences) {
+    console.warn('[CourseHomeSectionProgressSlot] Données invalides', {
+      sectionIds,
+      sections,
+      sequences,
+    });
     return null;
   }
+
+  console.log('[CourseHomeSectionProgressSlot] render', {
+    expandAll,
+    sectionIds,
+    sectionsKeys: Object.keys(sections),
+    sequencesKeys: Object.keys(sequences),
+  });
 
   return (
     <div className="course-home-section-progress-slot">
       {sectionIds.map((sectionId) => {
+        console.group(`[Section] ${sectionId}`);
+
         const section = sections[sectionId];
-        
-        console.log(sectionId);
-        console.log(section);
+        if (!section) {
+          console.warn('[Section] Section introuvable pour sectionId', sectionId);
+          console.groupEnd();
+          return null;
+        }
 
         const sequenceIds = section.sequenceIds ?? [];
-        if (!section) return null;
+        console.log('[Section] section data', section);
+        console.log('[Section] sequenceIds', sequenceIds);
 
-        let sumSeq = 0
-        let sumCompleteSeq = 0
+        let sumSeq = 0;
+        let sumCompleteSeq = 0;
 
         sequenceIds.forEach((seqId) => {
-          const seq = sections[seqId];
-          console.log(seq);
-          console.log(`  - ${seqId}: ${seq ? seq.displayName || seq.title || seq.name : 'Section non trouvée'}`);
+          console.group(`[Sequence] ${seqId}`);
 
-          if (!seq) return;
-          
-          sumSeq += 1
-          if (seq.complete) {
-            sumCompleteSeq += 1
+          const seq = sequences[seqId];
+          console.log('[Sequence] seq brut', seq);
+
+          const seqTitle = seq
+            ? seq.displayName || seq.title || seq.name
+            : 'Sequence non trouvée';
+          console.log('[Sequence] titre', seqTitle);
+
+          if (!seq) {
+            console.warn('[Sequence] Séquence introuvable dans courseBlocks.sequences pour seqId', seqId);
+            console.groupEnd();
+            return;
           }
+
+          sumSeq += 1;
+          if (seq.complete) {
+            sumCompleteSeq += 1;
+          }
+          console.log('[Sequence] complete ?', seq.complete);
+          console.groupEnd();
         });
 
-        const progress = sumSeq > 0
-          ? Math.round((sumCompleteSeq / sumSeq) * 100)
-          : 0;
+        console.log('[Section] sumSeq / sumCompleteSeq', { sumSeq, sumCompleteSeq });
 
-        const title = section.displayName || section.title || section.name || 'Section';
+        const progress =
+          sumSeq > 0 ? Math.round((sumCompleteSeq / sumSeq) * 100) : 0;
+
+        const title =
+          section.displayName || section.title || section.name || 'Section';
         const isDone = progress === 100;
+
+        console.log('[Section] progress calculé', { title, progress, isDone });
+
+        console.groupEnd();
 
         return (
           <div key={sectionId} className="section-progress-card mb-3">
@@ -97,7 +144,7 @@ const CourseHomeSectionProgressSlot: React.FC<Props> = ({
       })}
     </div>
   );
-}
-
+};
 
 export default CourseHomeSectionProgressSlot;
+
