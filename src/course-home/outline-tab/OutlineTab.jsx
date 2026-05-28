@@ -181,6 +181,7 @@ const OutlineTab = () => {
         </div>
 
 
+        {rootCourseId && (
         <div className="col col-12 col-md-6">
           <CourseHomeSectionProgressSlot
             expandAll={expandAll}
@@ -188,8 +189,10 @@ const OutlineTab = () => {
             sections={sections}
           />
         </div>
+        )}
 
 
+        {/* CA - 28052026 - Masquer pour le moment */}
         {rootCourseId && false && (
           <div className="col col-12 col-md-4">
             <ProctoringInfoPanel />

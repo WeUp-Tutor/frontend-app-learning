@@ -2,55 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './custom.scss';
 
-function clamp(value, min = 0, max = 100) {
-  return Math.min(Math.max(value, min), max);
-}
 
 interface Props {
   expandAll: boolean;
-  sections: object;
   sectionIds: string[];
-}
-
-
-
-function getSectionProgress(section) {
-
-  console.log('in getsectionprogress')
-  if (!section) return 0;
-  console.log(section)
-
-
-  if (Array.isArray(section.sequenceIds) && section.sequenceIds.length > 0) {
-
-    console.log('section has sequences')
-    console.log(section.sequenceIds)
-
-    const sequences = section.sequenceIds
-      .map((id) => sequencesById[id])
-      .filter(Boolean);
-
-    if (sequences.length === 0) return 0;
-
-    const completed = sequences.filter(
-      (item) => item?.complete === true || item?.completed === true
-    ).length;
-
-    return clamp(Math.round((completed / sequences.length) * 100));
-  }
-
-  return 0;
+  sections: object;
 }
 
 
 
 
-
-export default function CourseHomeSectionProgressSlot({
-  expandAll,
-  sectionIds,
-  sections,
-}) {
+export default function CourseHomeSectionProgressSlot({ expandAll, sectionIds, sections }) {
   if (!Array.isArray(sectionIds) || !sections) {
     return null;
   }
@@ -59,9 +21,13 @@ export default function CourseHomeSectionProgressSlot({
     <div className="course-home-section-progress-slot">
       {sectionIds.map((sectionId) => {
         const section = sections[sectionId];
+        
+        console.log(sectionId);
+        console.log(section);
+        
         if (!section) return null;
 
-        const progress = getSectionProgress(section);
+        const progress = section.complete === true || section.completed === true ? 100 : 0;
         const title = section.displayName || section.title || section.name;
         const isDone = progress === 100;
 
