@@ -66,14 +66,11 @@ const CourseHomeSectionProgressSlot: React.FC<Props> = ({
   return (
     <div className="course-home-section-progress-slot">
 
-      <div className="section-progress-card mb-4">
+      <div className="section-progress-card global-section-progress-card mb-4">
         <div className="d-flex justify-content-between align-items-start gap-3 mb-2">
           <div>
             <div className="section-progress-title">
               Progression globale
-            </div>
-            <div className="section-progress-status">
-              {overallProgress === 100 ? 'Cours terminé' : 'En cours'}
             </div>
           </div>
 
