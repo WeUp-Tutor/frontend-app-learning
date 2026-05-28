@@ -23,7 +23,6 @@
   padding: 1.25rem 1.5rem;
   box-shadow: $shadow-soft;
   margin-bottom: 2.5rem;
-  height: 22px;
 
   .section-progress-badge {
     font-weight: 600;
@@ -46,7 +45,7 @@
   border-radius: 16px;
   padding: 1rem 1.1rem;
   box-shadow: $shadow-card;
-  animation: fadeSlideUp 500ms ease-out;
+//  animation: fadeSlideUp 500ms ease-out;
 
   .section-progress-bar {
     height: 10px;
@@ -80,7 +79,7 @@
     transparent 60%
   );
   transform: translateX(-100%);
-  animation: progressShimmer 1.8s infinite;
+ // animation: progressShimmer 1.8s infinite;
 }
 
 @keyframes fadeSlideUp {
