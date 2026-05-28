@@ -15,6 +15,10 @@ import { ID } from './constants';
 import { useCourseOutlineSidebar } from './hooks';
 import messages from './messages';
 
+
+// Cet élément correspond au plan du cours présent sur la page de cours
+
+
 const CourseOutlineTray = () => {
   const intl = useIntl();
   const [selectedSection, setSelectedSection] = useState(null);
@@ -73,7 +77,6 @@ const CourseOutlineTray = () => {
         iconAs={MenuOpenIcon}
         onClick={handleToggleCollapse}
       />
-      <p style={{ color: 'red', lineHeight : 10, padding: 20 }}>Test modification courseOutlineTray</p>
     </div>
   );
 

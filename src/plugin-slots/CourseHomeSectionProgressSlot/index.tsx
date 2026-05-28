@@ -1,18 +1,29 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './custom.scss';
 
 
+type Section = {
+  displayName?: string;
+  title?: string;
+  name?: string;
+  complete?: boolean;
+  sequenceIds?: string[];
+};
+
 interface Props {
-  expandAll: boolean;
+  expandAll?: boolean;
   sectionIds: string[];
-  sections: object;
+  sections: Record<string, Section>;
 }
 
 
 
 
-export default function CourseHomeSectionProgressSlot({ expandAll, sectionIds, sections }) {
+const CourseHomeSectionProgressSlot: React.FC<Props> = ({
+  expandAll = false,
+  sectionIds,
+  sections,
+}) => {
   if (!Array.isArray(sectionIds) || !sections) {
     return null;
   }
@@ -24,11 +35,31 @@ export default function CourseHomeSectionProgressSlot({ expandAll, sectionIds, s
         
         console.log(sectionId);
         console.log(section);
-        
+
+        const sequenceIds = section.sequenceIds ?? [];
         if (!section) return null;
 
-        const progress = section.complete === true || section.completed === true ? 100 : 0;
-        const title = section.displayName || section.title || section.name;
+        let sumSeq = 0
+        let sumCompleteSeq = 0
+
+        sequenceIds.forEach((seqId) => {
+          const seq = sections[seqId];
+          console.log(seq);
+          console.log(`  - ${seqId}: ${seq ? seq.displayName || seq.title || seq.name : 'Section non trouvée'}`);
+
+          if (!seq) return;
+          
+          sumSeq += 1
+          if (seq.complete) {
+            sumCompleteSeq += 1
+          }
+        });
+
+        const progress = sumSeq > 0
+          ? Math.round((sumCompleteSeq / sumSeq) * 100)
+          : 0;
+
+        const title = section.displayName || section.title || section.name || 'Section';
         const isDone = progress === 100;
 
         return (
@@ -69,12 +100,4 @@ export default function CourseHomeSectionProgressSlot({ expandAll, sectionIds, s
 }
 
 
-CourseHomeSectionProgressSlot.propTypes = {
-  expandAll: PropTypes.bool,
-  sectionIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-  sections: PropTypes.object.isRequired,
-};
-
-CourseHomeSectionProgressSlot.defaultProps = {
-  expandAll: false,
-};
+export default CourseHomeSectionProgressSlot;
