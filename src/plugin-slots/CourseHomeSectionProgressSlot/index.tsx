@@ -1,6 +1,6 @@
 import React from 'react';
-import { useModel } from '../../../generic/model-store';
-import { useContextId } from '../../../data/hooks';
+import { useModel } from '../../generic/model-store';
+import { useContextId } from '../../data/hooks';
 import './custom.scss';
 
 type Section = {
