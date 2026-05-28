@@ -5,7 +5,6 @@
   padding: 0 10px;
 }
 
-
 .global-progress-title {
   font-weight: 700;
   font-size: 1.5rem;
@@ -16,26 +15,32 @@
   border-radius: 0.5rem;
 }
 
+
 .global-section-progress-card {
-  background-color: $color-primary-soft;
-  border: 1px solid $color-primary;
+  // background-color: $color-primary-soft;
+  // border: 1px solid $color-primary;
   border-radius: 0.5rem;
   padding: 1.25rem 1.5rem;
   box-shadow: $shadow-soft;
   margin-bottom: 2.5rem;
 
   .section-progress-badge {
-    font-weight: 600;
+    font-weight: 900;
+    width: 100%;
+    text-align: end;
+    margin-top: 10px;
   }
 
   .section-progress-bar {
     height: 22px;
+    border-radius: 999px;
   }
-
+  
   .progress-bar {
     background-color: $color-primary;
     height: 14px;
     margin: 3px;
+    border-radius: 999px;
   }
 }
 
@@ -45,7 +50,7 @@
   border-radius: 16px;
   padding: 1rem 1.1rem;
   box-shadow: $shadow-card;
-//  animation: fadeSlideUp 500ms ease-out;
+  animation: fadeSlideUp 500ms ease-out;
 
   .section-progress-bar {
     height: 10px;
@@ -57,30 +62,26 @@
   .section-progress-bar .progress-bar {
     position: relative;
     border-radius: 999px;
-    background: linear-gradient(
-      90deg,
-      $color-secondary 0%,
-      $color-primary 100%
-    );
+    background: $color-primary;
     transition: width 700ms cubic-bezier(0.22, 1, 0.36, 1);
     overflow: hidden;
   }
 }
 
-.section-progress-bar .progress-bar::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    110deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.12) 40%,
-    rgba(255, 255, 255, 0.3) 50%,
-    transparent 60%
-  );
-  transform: translateX(-100%);
- // animation: progressShimmer 1.8s infinite;
-}
+// .section-progress-bar .progress-bar::after {
+//   content: "";
+//   position: absolute;
+//   inset: 0;
+//   background: linear-gradient(
+//     110deg,
+//     transparent 0%,
+//     rgba(255, 255, 255, 0.12) 40%,
+//     rgba(255, 255, 255, 0.3) 50%,
+//     transparent 60%
+//   );
+//   transform: translateX(-100%);
+//   animation: progressShimmer 1.8s infinite;
+// }
 
 @keyframes fadeSlideUp {
   from {
@@ -93,11 +94,11 @@
   }
 }
 
-@keyframes progressShimmer {
-  to {
-    transform: translateX(100%);
-  }
-}
+// @keyframes progressShimmer {
+//   to {
+//     transform: translateX(100%);
+//   }
+// }
 
 @media (prefers-reduced-motion: reduce) {
   .section-progress-card,
@@ -141,5 +142,9 @@
 
 #courseHome-outline .collapsible-trigger .text-success {
   color: $color-secondary;
+}
+
+.text-dark-500 {
+  color: $color-surface !important;
 }
 
