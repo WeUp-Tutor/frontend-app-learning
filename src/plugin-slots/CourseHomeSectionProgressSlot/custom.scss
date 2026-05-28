@@ -1,3 +1,4 @@
+@import './colors';
 
 .course-home-section-progress-slot {
   margin-top: 1.5rem;
@@ -5,11 +6,12 @@
 }
 
 .global-section-progress-card {
-  background-color: #f5f7ff; // léger bleu
-  border: 1px solid #d0d7ff;
+  background-color: $color-primary-soft;
+  border: 1px solid $color-primary;
   border-radius: 0.5rem;
   padding: 1.25rem 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  box-shadow: $shadow-soft;
+  margin-bottom: 2.5rem;
 
   .section-progress-title {
     font-weight: 600;
@@ -20,33 +22,43 @@
     font-weight: 600;
   }
 
-  .section-progress-bar .progress-bar {
-    background-color: #0d6efd; // couleur plus « forte » que les sections
+  .section-progress-bar {
+    height: 22px;
+  }
+
+  .progress-bar {
+    background-color: $color-primary;
+    height: 14px;
+    margin: 3px;
   }
 }
 
 .section-progress-card {
-  background: #fff;
-  border: 1px solid #edf0f3;
+  background: $color-surface;
+  border: 1px solid $color-surface-border;
   border-radius: 16px;
   padding: 1rem 1.1rem;
-  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+  box-shadow: $shadow-card;
   animation: fadeSlideUp 500ms ease-out;
-}
 
-.section-progress-bar {
-  height: 10px;
-  background-color: #eef2f7;
-  border-radius: 999px;
-  overflow: hidden;
-}
+  .section-progress-bar {
+    height: 10px;
+    background-color: $color-progress-bg;
+    border-radius: 999px;
+    overflow: hidden;
+  }
 
-.section-progress-bar .progress-bar {
-  position: relative;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #4f46e5 0%, #3b82f6 100%);
-  transition: width 700ms cubic-bezier(0.22, 1, 0.36, 1);
-  overflow: hidden;
+  .section-progress-bar .progress-bar {
+    position: relative;
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      $color-secondary 0%,
+      $color-primary 100%
+    );
+    transition: width 700ms cubic-bezier(0.22, 1, 0.36, 1);
+    overflow: hidden;
+  }
 }
 
 .section-progress-bar .progress-bar::after {
