@@ -1,7 +1,7 @@
 @import './colors';
 
+
 .course-home-section-progress-slot {
-  margin-top: 1.5rem;
   padding: 0 10px;
 }
 
@@ -15,10 +15,7 @@
   border-radius: 0.5rem;
 }
 
-
 .global-section-progress-card {
-  // background-color: $color-primary-soft;
-  // border: 1px solid $color-primary;
   border-radius: 0.5rem;
   padding: 1.25rem 1.5rem;
   box-shadow: $shadow-soft;
@@ -37,7 +34,7 @@
   }
   
   .progress-bar {
-    background-color: $color-primary;
+    background-color: $color-secondary;
     height: 14px;
     margin: 3px;
     border-radius: 999px;
@@ -68,20 +65,20 @@
   }
 }
 
-// .section-progress-bar .progress-bar::after {
-//   content: "";
-//   position: absolute;
-//   inset: 0;
-//   background: linear-gradient(
-//     110deg,
-//     transparent 0%,
-//     rgba(255, 255, 255, 0.12) 40%,
-//     rgba(255, 255, 255, 0.3) 50%,
-//     transparent 60%
-//   );
-//   transform: translateX(-100%);
-//   animation: progressShimmer 1.8s infinite;
-// }
+.section-progress-bar .progress-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.12) 40%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 60%
+  );
+  transform: translateX(-100%);
+  animation: progressShimmer 1.8s infinite;
+}
 
 @keyframes fadeSlideUp {
   from {
@@ -94,11 +91,11 @@
   }
 }
 
-// @keyframes progressShimmer {
-//   to {
-//     transform: translateX(100%);
-//   }
-// }
+@keyframes progressShimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .section-progress-card,
@@ -110,8 +107,6 @@
 }
 
 
-
-
 // Resume panel 
 #root .course-outline-tab .raised-card {
   background: $color-primary;
@@ -120,9 +115,8 @@
   box-shadow: $shadow-card;
 }
 #root .course-outline-tab .raised-card .pgn__card-header-actions a {
-  background: $color-primary-light;
+  background: $color-secondary;
 }
-
 
 
 // left panel
@@ -154,6 +148,3 @@
     color: $color-primary !important;
   }
 }
-
- 
-
