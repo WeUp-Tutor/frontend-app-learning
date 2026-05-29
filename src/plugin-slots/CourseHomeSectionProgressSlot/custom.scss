@@ -120,32 +120,40 @@
   box-shadow: $shadow-card;
 }
 #root .course-outline-tab .raised-card .pgn__card-header-actions a {
-  background: $color-secondary;
+  background: $color-primary-light;
 }
 
 
 
 // left panel
-.collapsible-trigger {
+#courseHome-outline .collapsible-trigger {
   background: $color-tertiary;
   color: $color-surface;
   border: none;
+
+  .text-dark-500 {
+    color: $color-surface !important;
+  }
+
+  .text-success {
+    color: $color-secondary !important;
+  }
 }
 
 .collapsible-icon .btn-icon {
   border-radius: 50%;
   color: $color-surface;
-  background: $color-secondary;
+  background: $color-primary;
 }
 .collapsible-icon .btn-icon:hover {
-  background: $color-primary;
+  background: $color-primary-light;
 } 
 
-#courseHome-outline .collapsible-trigger .text-success {
-  color: $color-secondary !important;
+#courseHome-outline .collapsible-body {
+  .text-success {
+    color: $color-primary !important;
+  }
 }
 
-.text-dark-500 {
-  color: $color-surface !important;
-}
+ 
 

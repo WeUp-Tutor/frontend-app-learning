@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 
 import SequenceDueDate from './SequenceDueDate';
 import HiddenSequenceLink from './HiddenSequenceLink';
@@ -34,7 +33,7 @@ const SequenceLink: React.FC<Props> = ({
 
   return (
     <li>
-      <div className={classNames('', { 'mt-2 pt-2 border-top border-light': !first })}>
+      <div className="mt-2 pt-2 border-top border-light">
         <SequenceTitle
           {...{
             complete,
