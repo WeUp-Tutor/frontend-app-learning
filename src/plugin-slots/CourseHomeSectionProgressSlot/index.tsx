@@ -87,7 +87,7 @@ const CourseHomeSectionProgressSlot: React.FC<Props> = ({
           aria-label="Progression globale du cours"
         >
           <div
-            className={`progress-bar ${overallProgress === 100 ? 'bg-success' : ''}`}
+            className="progress-bar"
             role="progressbar"
             style={{ width: `${overallProgress}%` }}
             aria-valuenow={overallProgress}
