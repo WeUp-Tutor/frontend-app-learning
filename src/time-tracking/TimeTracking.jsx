@@ -13,6 +13,34 @@ const ACTIVITY_EVENTS = [
   'pointerdown',
 ];
 
+
+
+
+const DEBUG = true;
+
+function debugLog(label, data = {}) {
+  if (!DEBUG) return;
+  console.log(`[TimeTracking] ${label}`, data);
+}
+
+useEffect(() => {
+  debugLog('mounted');
+}, []);
+
+useEffect(() => {
+  debugLog('route-change-detected', {
+    pathname: location.pathname,
+    context,
+    trackingKey,
+  });
+}, [location.pathname, context, trackingKey]);
+
+
+
+
+
+
+
 function getCookie(name) {
   const cookies = document.cookie ? document.cookie.split('; ') : [];
   for (const cookie of cookies) {
@@ -119,14 +147,24 @@ export default function TimeTracking() {
     const currentContext = explicitContext || contextRef.current;
 
     if (!currentContext || !currentContext.courseId || !seconds || seconds <= 0) {
+      debugLog('sendTime-skipped', { seconds, reason, currentContext });
+
       return;
+
     }
 
     const endpoint = buildEndpoint(currentContext.courseId);
     const payload = buildPayload(seconds, reason, currentContext);
 
+    debugLog('sendTime-before-fetch', {
+      endpoint,
+      payload,
+      csrfTokenPresent: !!getCookie('csrftoken'),
+      origin: window.location.origin,
+    });
+
     try {
-      await fetch(endpoint, {
+      const response = await fetch(endpoint, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -136,8 +174,18 @@ export default function TimeTracking() {
         },
         body: JSON.stringify(payload),
       });
+
+      const responseText = await response.text();
+      debugLog('sendTime-response', {
+        status: response.status,
+        ok: response.ok,
+        responseText,
+      });
     } catch (error) {
-      console.error('Time tracking error:', error);
+      debugLog('sendTime-error', {
+        message: error?.message,
+        stack: error?.stack,
+      });
     }
   }, []);
 
@@ -175,6 +223,12 @@ export default function TimeTracking() {
 
   const endTimer = useCallback(() => {
     if (!isTrackingRef.current || !startTimestampRef.current) {
+
+      debugLog('endTimer-skipped', {
+        isTracking: isTrackingRef.current,
+        startTimestamp: startTimestampRef.current,
+      });
+
       return 0;
     }
 
@@ -183,6 +237,8 @@ export default function TimeTracking() {
     isTrackingRef.current = false;
     startTimestampRef.current = null;
     clearIdleTimer();
+
+    debugLog('timer-stopped', { seconds });
 
     return seconds > 0 ? seconds : 0;
   }, [clearIdleTimer]);
@@ -198,16 +254,24 @@ export default function TimeTracking() {
     const currentContext = explicitContext || contextRef.current;
 
     if (!currentContext) {
+      debugLog('startTimer-skipped-no-context');
+
       return;
     }
+
 
     if (!isTrackingRef.current) {
       startTimestampRef.current = Date.now();
       isTrackingRef.current = true;
+      debugLog('timer-started', { currentContext });
+  
+    } else {
+      debugLog('timer-already-running', { currentContext });
     }
 
     clearIdleTimer();
     idleTimerRef.current = window.setTimeout(() => {
+      debugLog('idle-timeout-fired', { currentContext });
       stopAndSend('idle', currentContext);
     }, IDLE_DELAY);
   }, [clearIdleTimer, stopAndSend]);
