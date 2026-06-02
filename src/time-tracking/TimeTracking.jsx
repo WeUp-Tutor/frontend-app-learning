@@ -40,8 +40,17 @@ function getLmsBaseUrl() {
 }
 
 function getCourseIdFromPath(pathname) {
-  const match = pathname.match(/^\/learning\/course\/([^/]+)\/?(.*)$/);
-  return match ? decodeURIComponent(match[1]) : '';
+  const learningMatch = pathname.match(/^\/learning\/course\/([^/]+)\/?(.*)$/);
+  if (learningMatch) {
+    return decodeURIComponent(learningMatch[1]);
+  }
+
+  const courseMatch = pathname.match(/^\/course\/([^/]+)\/?(.*)$/);
+  if (courseMatch) {
+    return decodeURIComponent(courseMatch[1]);
+  }
+
+  return '';
 }
 
 function extractBlockByType(pathname, type) {
@@ -51,7 +60,10 @@ function extractBlockByType(pathname, type) {
 }
 
 function getTrackingContext(pathname) {
-  if (!pathname.startsWith('/learning/course/')) {
+  const isLearningRoute = pathname.startsWith('/learning/course/');
+  const isCourseRoute = pathname.startsWith('/course/');
+
+  if (!isLearningRoute && !isCourseRoute) {
     return null;
   }
 
