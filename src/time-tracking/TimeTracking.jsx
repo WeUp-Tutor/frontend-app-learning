@@ -15,30 +15,11 @@ const ACTIVITY_EVENTS = [
 
 
 
-
 const DEBUG = true;
-
 function debugLog(label, data = {}) {
   if (!DEBUG) return;
   console.log(`[TimeTracking] ${label}`, data);
 }
-
-useEffect(() => {
-  debugLog('mounted');
-}, []);
-
-useEffect(() => {
-  debugLog('route-change-detected', {
-    pathname: location.pathname,
-    context,
-    trackingKey,
-  });
-}, [location.pathname, context, trackingKey]);
-
-
-
-
-
 
 
 function getCookie(name) {
@@ -110,6 +91,9 @@ function buildPayload(seconds, reason, context) {
 }
 
 export default function TimeTracking() {
+
+
+
   const location = useLocation();
 
   const context = useMemo(
@@ -123,6 +107,25 @@ export default function TimeTracking() {
     }
     return [context.courseId, context.section, context.subSection].join('::');
   }, [context]);
+
+
+
+
+
+  useEffect(() => {
+    debugLog('mounted');
+  }, []);
+
+  useEffect(() => {
+    debugLog('route-change-detected', {
+      pathname: location.pathname,
+      context,
+      trackingKey,
+    });
+  }, [location.pathname, context, trackingKey]);
+
+
+
 
   const contextRef = useRef(context);
   const trackingKeyRef = useRef(trackingKey);
