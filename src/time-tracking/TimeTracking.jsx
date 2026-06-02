@@ -160,13 +160,33 @@ export default function TimeTracking() {
 
 
 
-
+  const csrfTokenRef = useRef(null);
   const contextRef = useRef(context);
   const trackingKeyRef = useRef(trackingKey);
   const isTrackingRef = useRef(false);
   const startTimestampRef = useRef(null);
   const idleTimerRef = useRef(null);
   const hiddenRef = useRef(false);
+
+  useEffect(() => {
+    if (!context) {
+      return;
+    }
+
+    ensureCsrfToken()
+      .then((token) => {
+        csrfTokenRef.current = token;
+        debugLog('csrf-ready', {
+          tokenPresent: !!token,
+          cookie: document.cookie,
+        });
+      })
+      .catch((error) => {
+        debugLog('csrf-init-error', {
+          message: error?.message,
+        });
+      });
+  }, [context]);
 
   useEffect(() => {
     contextRef.current = context;
@@ -180,33 +200,45 @@ export default function TimeTracking() {
     }
   }, []);
 
+
+
   const sendTime = useCallback(async (seconds, reason, explicitContext = null) => {
     const currentContext = explicitContext || contextRef.current;
 
     if (!currentContext || !currentContext.courseId || !seconds || seconds <= 0) {
       debugLog('sendTime-skipped', { seconds, reason, currentContext });
-
       return;
-
     }
 
     const endpoint = buildEndpoint(currentContext.courseId);
     const payload = buildPayload(seconds, reason, currentContext);
 
-    debugLog('sendTime-before-fetch', {
-      endpoint,
-      payload,
-      csrfTokenPresent: !!getCookie('csrftoken'),
-      origin: window.location.origin,
-    });
-
     try {
+      let csrfToken = csrfTokenRef.current || getCookie('csrftoken');
+
+      if (!csrfToken) {
+        csrfToken = await ensureCsrfToken();
+        csrfTokenRef.current = csrfToken;
+      }
+
+      debugLog('sendTime-before-fetch', {
+        endpoint,
+        payload,
+        csrfTokenPresent: !!csrfToken,
+        origin: window.location.origin,
+      });
+
+      if (!csrfToken) {
+        debugLog('sendTime-aborted-no-csrf', { endpoint, payload });
+        return;
+      }
+
       const response = await fetch(endpoint, {
         method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRFToken': getCookie('csrftoken') || '',
+          'X-CSRFToken': csrfToken,
           'X-Requested-With': 'XMLHttpRequest',
         },
         body: JSON.stringify(payload),
@@ -226,6 +258,10 @@ export default function TimeTracking() {
     }
   }, []);
 
+
+
+
+
   const sendTimeOnUnload = useCallback((seconds, explicitContext = null) => {
     const currentContext = explicitContext || contextRef.current;
 
@@ -233,14 +269,25 @@ export default function TimeTracking() {
       return;
     }
 
+    const csrfToken = csrfTokenRef.current || getCookie('csrftoken');
+    if (!csrfToken) {
+      debugLog('sendTimeOnUnload-skipped-no-csrf', {
+        seconds,
+        currentContext,
+      });
+      return;
+    }
+
     const endpoint = buildEndpoint(currentContext.courseId);
     const payload = buildPayload(seconds, 'unload', currentContext);
 
     if (navigator.sendBeacon) {
-      const body = new URLSearchParams();
+      const body = new FormData();
       Object.entries(payload).forEach(([key, value]) => {
         body.append(key, String(value ?? ''));
       });
+      body.append('csrfmiddlewaretoken', csrfToken);
+
       navigator.sendBeacon(endpoint, body);
       return;
     }
@@ -250,13 +297,14 @@ export default function TimeTracking() {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRFToken': getCookie('csrftoken') || '',
+        'X-CSRFToken': csrfToken,
         'X-Requested-With': 'XMLHttpRequest',
       },
       body: JSON.stringify(payload),
       keepalive: true,
     }).catch(() => {});
   }, []);
+
 
   const endTimer = useCallback(() => {
     if (!isTrackingRef.current || !startTimestampRef.current) {
