@@ -40,16 +40,23 @@ function getLmsBaseUrl() {
 }
 
 function getCourseIdFromPath(pathname) {
+  debugLog('getCourseIdFromPath-input', { pathname });
+
   const learningMatch = pathname.match(/^\/learning\/course\/([^/]+)\/?(.*)$/);
   if (learningMatch) {
-    return decodeURIComponent(learningMatch[1]);
+    const value = decodeURIComponent(learningMatch[1]);
+    debugLog('getCourseIdFromPath-learningMatch', { value });
+    return value;
   }
 
   const courseMatch = pathname.match(/^\/course\/([^/]+)\/?(.*)$/);
   if (courseMatch) {
-    return decodeURIComponent(courseMatch[1]);
+    const value = decodeURIComponent(courseMatch[1]);
+    debugLog('getCourseIdFromPath-courseMatch', { value });
+    return value;
   }
 
+  debugLog('getCourseIdFromPath-noMatch');
   return '';
 }
 
@@ -63,29 +70,43 @@ function getTrackingContext(pathname) {
   const isLearningRoute = pathname.startsWith('/learning/course/');
   const isCourseRoute = pathname.startsWith('/course/');
 
+  debugLog('getTrackingContext-route-check', {
+    pathname,
+    isLearningRoute,
+    isCourseRoute,
+  });
+
   if (!isLearningRoute && !isCourseRoute) {
+    debugLog('getTrackingContext-return-null-route');
     return null;
   }
 
   const courseId = getCourseIdFromPath(pathname);
+  debugLog('getTrackingContext-courseId', { courseId });
 
   if (!courseId) {
+    debugLog('getTrackingContext-return-null-courseId');
     return null;
   }
 
   if (pathname.includes('/discussion/')) {
-    return {
+    const result = {
       courseId,
       section: 'forum',
       subSection: 'forum',
     };
+    debugLog('getTrackingContext-discussion-result', result);
+    return result;
   }
 
-  return {
+  const result = {
     courseId,
     section: extractBlockByType(pathname, 'sequential'),
     subSection: extractBlockByType(pathname, 'vertical'),
   };
+
+  debugLog('getTrackingContext-result', result);
+  return result;
 }
 
 function buildEndpoint(courseId) {
@@ -105,6 +126,7 @@ function buildPayload(seconds, reason, context) {
 export default function TimeTracking() {
 
 
+  console.log('TIME_TRACKING_BUILD_V2');
 
   const location = useLocation();
 
