@@ -13,14 +13,12 @@ const ACTIVITY_EVENTS = [
   'pointerdown',
 ];
 
-
-
 const DEBUG = true;
+
 function debugLog(label, data = {}) {
   if (!DEBUG) return;
   console.log(`[TimeTracking] ${label}`, data);
 }
-
 
 function getCookie(name) {
   const cookies = document.cookie ? document.cookie.split('; ') : [];
@@ -37,6 +35,32 @@ function getLmsBaseUrl() {
   const url = new URL(window.location.origin);
   url.hostname = url.hostname.replace(/^apps\./, '');
   return url.origin;
+}
+
+async function ensureCsrfToken() {
+  let csrfToken = getCookie('csrftoken');
+
+  if (csrfToken) {
+    return csrfToken;
+  }
+
+  const response = await fetch(`${getLmsBaseUrl()}/wul_apps/time_tracking/csrf/`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error(`Unable to initialize CSRF token: ${response.status}`);
+  }
+
+  csrfToken = getCookie('csrftoken');
+
+  debugLog('ensureCsrfToken-after-fetch', {
+    csrfTokenPresent: !!csrfToken,
+    cookie: document.cookie,
+  });
+
+  return csrfToken;
 }
 
 function getCourseIdFromPath(pathname) {
@@ -124,9 +148,7 @@ function buildPayload(seconds, reason, context) {
 }
 
 export default function TimeTracking() {
-
-
-  console.log('TIME_TRACKING_BUILD_V2');
+  console.log('TIME_TRACKING_BUILD_V3');
 
   const location = useLocation();
 
@@ -142,9 +164,13 @@ export default function TimeTracking() {
     return [context.courseId, context.section, context.subSection].join('::');
   }, [context]);
 
-
-
-
+  const csrfTokenRef = useRef(null);
+  const contextRef = useRef(context);
+  const trackingKeyRef = useRef(trackingKey);
+  const isTrackingRef = useRef(false);
+  const startTimestampRef = useRef(null);
+  const idleTimerRef = useRef(null);
+  const hiddenRef = useRef(false);
 
   useEffect(() => {
     debugLog('mounted');
@@ -157,16 +183,6 @@ export default function TimeTracking() {
       trackingKey,
     });
   }, [location.pathname, context, trackingKey]);
-
-
-
-  const csrfTokenRef = useRef(null);
-  const contextRef = useRef(context);
-  const trackingKeyRef = useRef(trackingKey);
-  const isTrackingRef = useRef(false);
-  const startTimestampRef = useRef(null);
-  const idleTimerRef = useRef(null);
-  const hiddenRef = useRef(false);
 
   useEffect(() => {
     if (!context) {
@@ -199,8 +215,6 @@ export default function TimeTracking() {
       idleTimerRef.current = null;
     }
   }, []);
-
-
 
   const sendTime = useCallback(async (seconds, reason, explicitContext = null) => {
     const currentContext = explicitContext || contextRef.current;
@@ -258,10 +272,6 @@ export default function TimeTracking() {
     }
   }, []);
 
-
-
-
-
   const sendTimeOnUnload = useCallback((seconds, explicitContext = null) => {
     const currentContext = explicitContext || contextRef.current;
 
@@ -270,6 +280,7 @@ export default function TimeTracking() {
     }
 
     const csrfToken = csrfTokenRef.current || getCookie('csrftoken');
+
     if (!csrfToken) {
       debugLog('sendTimeOnUnload-skipped-no-csrf', {
         seconds,
@@ -280,17 +291,6 @@ export default function TimeTracking() {
 
     const endpoint = buildEndpoint(currentContext.courseId);
     const payload = buildPayload(seconds, 'unload', currentContext);
-
-    if (navigator.sendBeacon) {
-      const body = new FormData();
-      Object.entries(payload).forEach(([key, value]) => {
-        body.append(key, String(value ?? ''));
-      });
-      body.append('csrfmiddlewaretoken', csrfToken);
-
-      navigator.sendBeacon(endpoint, body);
-      return;
-    }
 
     fetch(endpoint, {
       method: 'POST',
@@ -305,15 +305,12 @@ export default function TimeTracking() {
     }).catch(() => {});
   }, []);
 
-
   const endTimer = useCallback(() => {
     if (!isTrackingRef.current || !startTimestampRef.current) {
-
       debugLog('endTimer-skipped', {
         isTracking: isTrackingRef.current,
         startTimestamp: startTimestampRef.current,
       });
-
       return 0;
     }
 
@@ -340,16 +337,13 @@ export default function TimeTracking() {
 
     if (!currentContext) {
       debugLog('startTimer-skipped-no-context');
-
       return;
     }
-
 
     if (!isTrackingRef.current) {
       startTimestampRef.current = Date.now();
       isTrackingRef.current = true;
       debugLog('timer-started', { currentContext });
-  
     } else {
       debugLog('timer-already-running', { currentContext });
     }
