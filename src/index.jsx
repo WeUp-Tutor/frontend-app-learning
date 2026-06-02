@@ -36,6 +36,7 @@ import DecodePageRoute from './decode-page-route';
 import { DECODE_ROUTES, ROUTES } from './constants';
 import PreferencesUnsubscribe from './preferences-unsubscribe';
 import PageNotFound from './generic/PageNotFound';
+import TimeTracking from './time-tracking/TimeTracking';
 
 subscribe(APP_READY, () => {
   const root = createRoot(document.getElementById('root'));
@@ -50,6 +51,11 @@ subscribe(APP_READY, () => {
           <NoticesProvider>
             <UserMessagesProvider>
               <div className="app-container">
+
+
+                <TimeTracking />
+
+
                 <Routes>
                   <Route path="*" element={<PageWrap><PageNotFound /></PageWrap>} />
                   <Route path={ROUTES.UNSUBSCRIBE} element={<PageWrap><GoalUnsubscribe /></PageWrap>} />
