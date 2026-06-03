@@ -125,7 +125,6 @@ const CourseHomeSectionProgressSlot: React.FC<Props> = ({
 
         const progress = sumSeq > 0 ? Math.round((sumCompleteSeq / sumSeq) * 100) : 0;
         const title = section.displayName || section.title || section.name || 'Section';
-        const isDone = progress === 100;
 
 
         return (
@@ -145,7 +144,7 @@ const CourseHomeSectionProgressSlot: React.FC<Props> = ({
               aria-label={`Progression de la section ${title}`}
             >
               <div
-                className={`progress-bar ${isDone ? 'bg-success' : ''}`}
+                className="progress-bar"
                 role="progressbar"
                 style={{ width: `${progress}%` }}
                 aria-valuenow={progress}
