@@ -20,47 +20,10 @@ function debugLog(label, data = {}) {
   console.log(`[TimeTracking] ${label}`, data);
 }
 
-function getCookie(name) {
-  const cookies = document.cookie ? document.cookie.split('; ') : [];
-  for (const cookie of cookies) {
-    const [key, ...valueParts] = cookie.split('=');
-    if (key === name) {
-      return decodeURIComponent(valueParts.join('='));
-    }
-  }
-  return null;
-}
-
 function getLmsBaseUrl() {
   const url = new URL(window.location.origin);
   url.hostname = url.hostname.replace(/^apps\./, '');
   return url.origin;
-}
-
-async function ensureCsrfToken() {
-  let csrfToken = getCookie('csrftoken');
-
-  if (csrfToken) {
-    return csrfToken;
-  }
-
-  const response = await fetch(`${getLmsBaseUrl()}/wul_apps/time_tracking/csrf/`, {
-    method: 'GET',
-    credentials: 'include',
-  });
-
-  if (!response.ok) {
-    throw new Error(`Unable to initialize CSRF token: ${response.status}`);
-  }
-
-  csrfToken = getCookie('csrftoken');
-
-  debugLog('ensureCsrfToken-after-fetch', {
-    csrfTokenPresent: !!csrfToken,
-    cookie: document.cookie,
-  });
-
-  return csrfToken;
 }
 
 function getCourseIdFromPath(pathname) {
@@ -148,14 +111,11 @@ function buildPayload(seconds, reason, context) {
 }
 
 export default function TimeTracking() {
-  console.log('TIME_TRACKING_BUILD_V3');
+  console.log('TIME_TRACKING_BUILD_V4');
 
   const location = useLocation();
 
-  const context = useMemo(
-    () => getTrackingContext(location.pathname),
-    [location.pathname]
-  );
+  const context = useMemo(() => getTrackingContext(location.pathname), [location.pathname]);
 
   const trackingKey = useMemo(() => {
     if (!context) {
@@ -164,7 +124,6 @@ export default function TimeTracking() {
     return [context.courseId, context.section, context.subSection].join('::');
   }, [context]);
 
-  const csrfTokenRef = useRef(null);
   const contextRef = useRef(context);
   const trackingKeyRef = useRef(trackingKey);
   const isTrackingRef = useRef(false);
@@ -184,31 +143,6 @@ export default function TimeTracking() {
     });
   }, [location.pathname, context, trackingKey]);
 
-  useEffect(() => {
-    if (!context) {
-      return;
-    }
-
-    ensureCsrfToken()
-      .then((token) => {
-        csrfTokenRef.current = token;
-        debugLog('csrf-ready', {
-          tokenPresent: !!token,
-          cookie: document.cookie,
-        });
-      })
-      .catch((error) => {
-        debugLog('csrf-init-error', {
-          message: error?.message,
-        });
-      });
-  }, [context]);
-
-  useEffect(() => {
-    contextRef.current = context;
-    trackingKeyRef.current = trackingKey;
-  }, [context, trackingKey]);
-
   const clearIdleTimer = useCallback(() => {
     if (idleTimerRef.current) {
       window.clearTimeout(idleTimerRef.current);
@@ -216,8 +150,9 @@ export default function TimeTracking() {
     }
   }, []);
 
-  const sendTime = useCallback(async (seconds, reason, explicitContext = null) => {
+  const sendTime = useCallback(async (seconds, reason, explicitContext = null, options = {}) => {
     const currentContext = explicitContext || contextRef.current;
+    const { keepalive = false } = options;
 
     if (!currentContext || !currentContext.courseId || !seconds || seconds <= 0) {
       debugLog('sendTime-skipped', { seconds, reason, currentContext });
@@ -227,38 +162,27 @@ export default function TimeTracking() {
     const endpoint = buildEndpoint(currentContext.courseId);
     const payload = buildPayload(seconds, reason, currentContext);
 
+    debugLog('sendTime-before-fetch', {
+      endpoint,
+      payload,
+      origin: window.location.origin,
+      keepalive,
+    });
+
     try {
-      let csrfToken = csrfTokenRef.current || getCookie('csrftoken');
-
-      if (!csrfToken) {
-        csrfToken = await ensureCsrfToken();
-        csrfTokenRef.current = csrfToken;
-      }
-
-      debugLog('sendTime-before-fetch', {
-        endpoint,
-        payload,
-        csrfTokenPresent: !!csrfToken,
-        origin: window.location.origin,
-      });
-
-      if (!csrfToken) {
-        debugLog('sendTime-aborted-no-csrf', { endpoint, payload });
-        return;
-      }
-
       const response = await fetch(endpoint, {
         method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRFToken': csrfToken,
           'X-Requested-With': 'XMLHttpRequest',
         },
         body: JSON.stringify(payload),
+        keepalive,
       });
 
       const responseText = await response.text();
+
       debugLog('sendTime-response', {
         status: response.status,
         ok: response.ok,
@@ -270,39 +194,6 @@ export default function TimeTracking() {
         stack: error?.stack,
       });
     }
-  }, []);
-
-  const sendTimeOnUnload = useCallback((seconds, explicitContext = null) => {
-    const currentContext = explicitContext || contextRef.current;
-
-    if (!currentContext || !currentContext.courseId || !seconds || seconds <= 0) {
-      return;
-    }
-
-    const csrfToken = csrfTokenRef.current || getCookie('csrftoken');
-
-    if (!csrfToken) {
-      debugLog('sendTimeOnUnload-skipped-no-csrf', {
-        seconds,
-        currentContext,
-      });
-      return;
-    }
-
-    const endpoint = buildEndpoint(currentContext.courseId);
-    const payload = buildPayload(seconds, 'unload', currentContext);
-
-    fetch(endpoint, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': csrfToken,
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-      body: JSON.stringify(payload),
-      keepalive: true,
-    }).catch(() => {});
   }, []);
 
   const endTimer = useCallback(() => {
@@ -325,10 +216,10 @@ export default function TimeTracking() {
     return seconds > 0 ? seconds : 0;
   }, [clearIdleTimer]);
 
-  const stopAndSend = useCallback((reason, explicitContext = null) => {
+  const stopAndSend = useCallback(async (reason, explicitContext = null, options = {}) => {
     const seconds = endTimer();
     if (seconds > 0) {
-      sendTime(seconds, reason, explicitContext);
+      await sendTime(seconds, reason, explicitContext, options);
     }
   }, [endTimer, sendTime]);
 
@@ -340,13 +231,10 @@ export default function TimeTracking() {
       return;
     }
 
-    if (!isTrackingRef.current) {
-      startTimestampRef.current = Date.now();
-      isTrackingRef.current = true;
-      debugLog('timer-started', { currentContext });
-    } else {
-      debugLog('timer-already-running', { currentContext });
-    }
+    startTimestampRef.current = Date.now();
+    isTrackingRef.current = true;
+
+    debugLog('timer-started', { currentContext });
 
     clearIdleTimer();
     idleTimerRef.current = window.setTimeout(() => {
@@ -356,28 +244,50 @@ export default function TimeTracking() {
   }, [clearIdleTimer, stopAndSend]);
 
   useEffect(() => {
-    if (!context) {
-      if (isTrackingRef.current) {
-        stopAndSend('leave-learning');
-      }
-      return undefined;
-    }
-
     const previousContext = contextRef.current;
     const previousKey = trackingKeyRef.current;
 
-    if (previousKey && previousKey !== trackingKey && isTrackingRef.current) {
+    if (!context) {
+      if (isTrackingRef.current && previousContext) {
+        stopAndSend('leave-learning', previousContext);
+      }
+      contextRef.current = null;
+      trackingKeyRef.current = '';
+      return;
+    }
+
+    if (
+      previousKey &&
+      previousKey !== trackingKey &&
+      isTrackingRef.current &&
+      previousContext
+    ) {
       stopAndSend('route-change', previousContext);
     }
 
     contextRef.current = context;
     trackingKeyRef.current = trackingKey;
-    startTimer(context);
 
-    return undefined;
+    if (!isTrackingRef.current) {
+      startTimer(context);
+    }
   }, [context, trackingKey, startTimer, stopAndSend]);
 
   useEffect(() => {
+    const resetIdleCountdown = () => {
+      const currentContext = contextRef.current;
+
+      if (!currentContext || document.hidden || !isTrackingRef.current) {
+        return;
+      }
+
+      clearIdleTimer();
+      idleTimerRef.current = window.setTimeout(() => {
+        debugLog('idle-timeout-fired', { currentContext });
+        stopAndSend('idle', currentContext);
+      }, IDLE_DELAY);
+    };
+
     const handleUserActivity = () => {
       const currentContext = contextRef.current;
 
@@ -390,10 +300,7 @@ export default function TimeTracking() {
         return;
       }
 
-      clearIdleTimer();
-      idleTimerRef.current = window.setTimeout(() => {
-        stopAndSend('idle', currentContext);
-      }, IDLE_DELAY);
+      resetIdleCountdown();
     };
 
     const handleVisibilityChange = () => {
@@ -417,7 +324,7 @@ export default function TimeTracking() {
       const seconds = endTimer();
 
       if (seconds > 0) {
-        sendTimeOnUnload(seconds, currentContext);
+        sendTime(seconds, 'unload', currentContext, { keepalive: true });
       }
     };
 
@@ -440,7 +347,7 @@ export default function TimeTracking() {
 
       clearIdleTimer();
     };
-  }, [clearIdleTimer, endTimer, sendTimeOnUnload, startTimer, stopAndSend]);
+  }, [clearIdleTimer, endTimer, sendTime, startTimer, stopAndSend]);
 
   return null;
 }
