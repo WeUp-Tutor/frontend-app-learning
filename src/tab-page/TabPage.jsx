@@ -7,7 +7,7 @@ import { Navigate } from 'react-router-dom';
 import { Toast } from '@openedx/paragon';
 import SiteFooter from '@edx/frontend-component-footer';
 
-import LearningHeader from '@edx/frontend_component-header';
+import LearningHeader from '@edx/frontend-component-header';
 
 import PageLoading from '../generic/PageLoading';
 import { getAccessDeniedRedirectUrl } from '../shared/access';
