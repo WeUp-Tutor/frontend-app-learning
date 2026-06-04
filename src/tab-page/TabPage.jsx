@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
 import { Toast } from '@openedx/paragon';
-import SiteFooter from '@edx/frontend-component-footer';
 
+import SiteFooter from '@edx/frontend-component-footer';
 import LearningHeader from '@edx/frontend-component-header';
 
 import PageLoading from '../generic/PageLoading';

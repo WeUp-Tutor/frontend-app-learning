@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
 import { PluginSlot } from '@openedx/frontend-plugin-framework';
 
+import './SequenceContainerCustom.scss';
+
+
 const SequenceContainerSlot = ({ courseId, unitId }) => (
   <PluginSlot
     id="org.openedx.frontend.learning.sequence_container.v1"

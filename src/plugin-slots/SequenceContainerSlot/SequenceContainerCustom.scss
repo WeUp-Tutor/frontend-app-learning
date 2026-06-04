@@ -1,0 +1,8 @@
+
+.pgn__stateful-btn, .nav-underline-tabs a.nav-item:nth-child(2) {
+  display: none;
+}
+
+.nav-underline-tabs > a.nav-item:nth-child(2) {
+  background: red;
+}
