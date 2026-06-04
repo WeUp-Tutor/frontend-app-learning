@@ -7,7 +7,7 @@ import { Navigate } from 'react-router-dom';
 import { Toast } from '@openedx/paragon';
 
 import SiteFooter from '@edx/frontend-component-footer';
-import LearningHeader from '@edx/frontend-component-header';
+import Header from '@edx/frontend-component-header';
 
 import PageLoading from '../generic/PageLoading';
 import { getAccessDeniedRedirectUrl } from '../shared/access';
@@ -72,7 +72,7 @@ const TabPage = (props) => {
         </>
       )}
 
-      <LearningHeader courseOrg={org} courseNumber={number} courseTitle={title} showUserDropdown={false} />
+      <Header mainMenuItems=[] secondaryMenuItems=[]  />
 
       {courseStatus === 'loading' && (
         <PageLoading srMessage={intl.formatMessage(messages.loading)} />
