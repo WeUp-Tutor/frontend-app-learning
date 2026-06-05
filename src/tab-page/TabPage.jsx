@@ -72,7 +72,7 @@ const TabPage = (props) => {
         </>
       )}
 
-      <Header mainMenuItems=[] secondaryMenuItems=[]  />
+      <Header mainMenuItems={[]} secondaryMenuItems={[]}  />
 
       {courseStatus === 'loading' && (
         <PageLoading srMessage={intl.formatMessage(messages.loading)} />
