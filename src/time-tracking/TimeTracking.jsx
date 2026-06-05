@@ -50,7 +50,7 @@ function getCourseIdFromPath(pathname) {
 function extractBlockByType(pathname, type) {
   const regex = new RegExp(`(block-v1:[^/]*type@${type}\\+block@[^/]+)`);
   const match = pathname.match(regex);
-  return match ? decodeURIComponent(match[1]) : '';
+  return match ? decodeURIComponent(match[1]).split('block@')[1] : '';
 }
 
 function getTrackingContext(pathname) {
@@ -86,10 +86,18 @@ function getTrackingContext(pathname) {
     return result;
   }
 
+  const section = extractBlockByType(pathname, 'sequential');
+  const subSection = extractBlockByType(pathname, 'vertical');
+
+  if (!section || !subSection) {
+    // au moins un des deux est vide → on ne renvoie rien
+    return null; // ou undefined, ou {} selon ton contrat d'API
+  }
+
   const result = {
     courseId,
-    section: extractBlockByType(pathname, 'sequential'),
-    subSection: extractBlockByType(pathname, 'vertical'),
+    section,
+    subSection,
   };
 
   debugLog('getTrackingContext-result', result);
