@@ -166,6 +166,9 @@
   .text-success {
     color: $color-primary !important;
   }
+  .text-gray-500 {
+    display: none !important;
+  }
 }
 
 
@@ -173,3 +176,9 @@
 #root .sequence-container .sequence .unit-navigation a svg {
   display: block !important;
 }
+#course-content {
+  .keyboard-help-button, .problem-progress, .submit-attempt-container .submission-feedback {
+    display: none !important
+  }
+}
+
