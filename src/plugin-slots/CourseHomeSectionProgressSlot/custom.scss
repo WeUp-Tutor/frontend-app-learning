@@ -176,9 +176,9 @@
 #root .sequence-container .sequence .unit-navigation a svg {
   display: block !important;
 }
-#course-content {
+.vert-mod {
   .keyboard-help-button, .problem-progress, .submit-attempt-container .submission-feedback {
-    display: none !important
+    display: none !important;
   }
 }
 
