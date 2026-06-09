@@ -55,7 +55,6 @@ const WelcomeMessage = ({ courseId, nextElementRef }) => {
         setDisplay(false);
         dispatch(dismissWelcomeMessage(courseId));
       }}
-      className="raised-card"
       actions={messageCanBeShortened ? [
         <Button
           onClick={() => {
