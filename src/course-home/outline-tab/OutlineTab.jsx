@@ -170,20 +170,7 @@ const OutlineTab = () => {
           )}
         </div>
         {rootCourseId && (
-          <div className="col col-12 col-md-4">
-            <ProctoringInfoPanel />
-            { /** Defer showing the goal widget until the ProctoringInfoPanel has resolved or has been determined as
-             disabled to avoid components bouncing around too much as screen is rendered */ }
-            {(!enableProctoredExams || proctoringPanelStatus === 'loaded') && weeklyLearningGoalEnabled && (
-              <WeeklyLearningGoalCard
-                daysPerWeek={selectedGoal && 'daysPerWeek' in selectedGoal ? selectedGoal.daysPerWeek : null}
-                subscribedToReminders={selectedGoal && 'subscribedToReminders' in selectedGoal ? selectedGoal.subscribedToReminders : false}
-              />
-            )}
-            <CourseTools />
-            <CourseOutlineTabNotificationsSlot courseId={courseId} />
-            <CourseDates />
-            <CourseHandouts />
+          <div>
           </div>
         )}
       </div>
