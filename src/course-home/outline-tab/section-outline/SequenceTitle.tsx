@@ -54,7 +54,6 @@ const SequenceTitle: React.FC<Props> = ({
         <span className="sr-only">
           , {intl.formatMessage(complete ? messages.completedAssignment : messages.incompleteAssignment)}
         </span>
-        <EffortEstimate className="ml-3 align-middle" block={sequence} />
       </div>
     </div>
   );
