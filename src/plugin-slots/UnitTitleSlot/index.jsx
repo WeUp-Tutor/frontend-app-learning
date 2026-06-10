@@ -31,11 +31,7 @@ const UnitTitleSlot = ({
         {renderUnitNavigation(true)}
       </div>
       <p className="sr-only">{formatMessage(messages.headerPlaceholder)}</p>
-      <BookmarkButton
-        unitId={unit.id}
-        isBookmarked={unit.bookmarked}
-        isProcessing={isProcessing}
-      />
+
     </PluginSlot>
   );
 };
