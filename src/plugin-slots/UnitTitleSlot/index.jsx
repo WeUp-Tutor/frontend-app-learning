@@ -12,7 +12,7 @@ const UnitTitleSlot = ({
 }) => {
   const { formatMessage } = useIntl();
   const isProcessing = unit.bookmarkedUpdateState === 'loading';
-
+  const customCss = `.problem-progress{display:none;}`;
   return (
     <PluginSlot
       id="org.openedx.frontend.learning.unit_title.v1"
@@ -24,6 +24,7 @@ const UnitTitleSlot = ({
         renderUnitNavigation,
       }}
     >
+      <style>{customCss}</style>
       <div className="d-flex justify-content-between">
         <div className="mb-0">
           <h3 className="h3">{unit.title}</h3>
