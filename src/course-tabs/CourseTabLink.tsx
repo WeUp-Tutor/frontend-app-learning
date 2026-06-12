@@ -15,6 +15,6 @@ export const CourseTabLink = ({
     href={url}
     className={classNames('nav-item flex-shrink-0 nav-link', { active: slug === activeTabSlug })}
   >
-    {title === 'cours' ? 'Parcours' : title}
+    {title === 'Course' ? 'Parcours' : title}
   </a>
 );
