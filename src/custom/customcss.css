@@ -1,0 +1,9 @@
+.mb-0 h3 {
+    display: none!important;
+}
+
+
+
+a[href*="/profile/u/"] {
+    display: none!important;
+}

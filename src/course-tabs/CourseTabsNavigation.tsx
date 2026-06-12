@@ -7,6 +7,7 @@ import { useCoursewareSearchState } from '../course-home/courseware-search/hooks
 
 import Tabs from '../generic/tabs/Tabs';
 import messages from './messages';
+import CustomCSSLoader from '../custom/CustomCSSLoader';
 
 interface CourseTabsNavigationProps {
   activeTabSlug?: string;
@@ -18,6 +19,7 @@ interface CourseTabsNavigationProps {
   }>;
 }
 
+
 const CourseTabsNavigation = ({
   activeTabSlug = undefined,
   className = null,
@@ -27,6 +29,7 @@ const CourseTabsNavigation = ({
   const { show } = useCoursewareSearchState();
 
   return (
+    <>
     <div id="courseTabsNavigation" className={classNames('course-tabs-navigation', className)}>
       <div className="container-xl">
         <div className="nav-bar">
@@ -43,9 +46,11 @@ const CourseTabsNavigation = ({
             <CoursewareSearchToggle />
           </div>
         </div>
+        <CustomCSSLoader />
       </div>
       {show && <CoursewareSearch />}
     </div>
+    </>
   );
 };
 
