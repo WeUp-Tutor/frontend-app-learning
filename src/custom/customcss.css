@@ -4,6 +4,6 @@
 
 
 
-a[href*="/profile/u/"] {
+a[href*="/undefined/u/"] {
     display: none!important;
 }
