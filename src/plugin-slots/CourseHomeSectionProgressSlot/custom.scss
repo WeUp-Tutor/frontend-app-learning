@@ -76,7 +76,7 @@
   }
 }
 
-.section-progress-card .section-progress-bar .progress-bar::after {
+.section-progress-card .section-progress-bar .progress-bar::after, .global-section-progress-card .section-progress-bar .progress-bar::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -88,12 +88,12 @@
     transparent 55%
   );
   transform: translateX(-100%);
-  animation: progressShimmer 2s linear infinite;
+  animation: progressShimmer 2.5s linear infinite;
   will-change: transform;
 }
 
-.section-progress-card .section-progress-bar .progress-bar[style*="width: 0%"]::after,
-.section-progress-card .section-progress-bar .progress-bar[aria-valuenow="0"]::after {
+.section-progress-bar .progress-bar[style*="width: 0%"]::after,
+.section-progress-bar .progress-bar[aria-valuenow="0"]::after {
   content: none;
 }
 
