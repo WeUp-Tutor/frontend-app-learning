@@ -1,3 +1,4 @@
+
 @import './colors';
 
 
@@ -20,17 +21,20 @@
   padding: 1.25rem 1.5rem;
   box-shadow: $shadow-soft;
   margin-bottom: 2.5rem;
+  background-color: $color-tertiary;
 
   .section-progress-badge {
     font-weight: 900;
     width: 100%;
     text-align: end;
     margin-top: 10px;
+    color: 100%;
   }
 
   .section-progress-bar {
     height: 22px;
     border-radius: 999px;
+    background-color: white;
   }
   
   .progress-bar {
