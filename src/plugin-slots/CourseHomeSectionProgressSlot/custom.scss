@@ -84,18 +84,16 @@
   background: linear-gradient(
     110deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.12) 40%,
-    rgba(255, 255, 255, 0.3) 50%,
-    transparent 60%
+    rgb(255, 255, 255) 48%,
+    transparent 55%
   );
   transform: translateX(-100%);
-  animation: progressShimmer 3s linear infinite;
+  animation: progressShimmer 2s linear infinite;
   will-change: transform;
 }
 
 .section-progress-card .section-progress-bar .progress-bar[style*="width: 0%"]::after,
-.section-progress-card .section-progress-bar .progress-bar[aria-valuenow="0"]::after,
-.section-progress-card .section-progress-bar .progress-bar[aria-valuenow="100"]::after {
+.section-progress-card .section-progress-bar .progress-bar[aria-valuenow="0"]::after {
   content: none;
 }
 
@@ -151,6 +149,9 @@
   .text-success {
     color: $color-secondary !important;
   }
+  .text-body {
+    display:none !important;
+  }
 }
 
 .collapsible-icon .btn-icon {
@@ -176,7 +177,7 @@
 #root .sequence-container .sequence .unit-navigation a svg {
   display: block !important;
 }
-.vert-mod .keyboard-help-button, .vert-mod .problem-progress, .vert-mod .submit-attempt-container .submission-feedback {
+.vert-mod .keyboard-help-button, .vert-mod .problem-progress, .vert-mod .submit-attempt-container .submission-feedback, .xmodule_display.xmodule_ProblemBlock div.problem-progress, .xmodule_display.xmodule_ProblemBlock div.problem .action .submission-feedback {
   display: none !important;
 }
 
