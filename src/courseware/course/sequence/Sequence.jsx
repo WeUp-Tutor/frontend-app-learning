@@ -25,6 +25,8 @@ import HiddenAfterDue from './hidden-after-due';
 import { UnitNavigation } from './sequence-navigation';
 import SequenceContent from './SequenceContent';
 
+import './custom.scss';
+
 const Sequence = ({
   unitId,
   sequenceId,
