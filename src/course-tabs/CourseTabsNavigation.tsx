@@ -38,7 +38,7 @@ const CourseTabsNavigation = ({
               className="nav-underline-tabs"
               aria-label={intl.formatMessage(messages.courseMaterial)}
             >
-              <a href="https://hexafret.weup.in/courses" className="nav-item flex-shrink-0 nav-link">Autres Parcours </a>
+              <a href="https://decouverte-metiers.sncf.hexafret.net/courses" className="nav-item flex-shrink-0 nav-link">Autres Parcours </a>
               <CourseTabLinksSlot tabs={tabs} activeTabSlug={activeTabSlug} />
             </Tabs>
           </div>
