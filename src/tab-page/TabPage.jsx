@@ -53,9 +53,6 @@ const TabPage = (props) => {
     }
   }
 
-  console.log('************')
-  console.log('Custom header loaded')
-
   return (
     <>
       {['loaded', 'denied'].includes(courseStatus) && (

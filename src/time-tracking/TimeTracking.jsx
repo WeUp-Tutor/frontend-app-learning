@@ -17,7 +17,6 @@ const DEBUG = true;
 
 function debugLog(label, data = {}) {
   if (!DEBUG) return;
-  console.log(`[TimeTracking] ${label}`, data);
 }
 
 function getLmsBaseUrl() {
@@ -119,10 +118,8 @@ function buildPayload(seconds, reason, context) {
 }
 
 export default function TimeTracking() {
-  console.log('TIME_TRACKING_BUILD_V4');
 
   const location = useLocation();
-
   const context = useMemo(() => getTrackingContext(location.pathname), [location.pathname]);
 
   const trackingKey = useMemo(() => {
