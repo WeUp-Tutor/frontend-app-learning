@@ -32,7 +32,7 @@
     "url": "https://github.com/openedx/frontend-app-learning/issues"
   },
   "dependencies": {
-    "@edx/brand": "0.0.0-dev",
+    "@edx/brand": "git+https://github.com/WeUp-Tutor/brand-openedx.git#brand/sncf-voyageurs",
     "@edx/browserslist-config": "1.5.1",
     "@edx/frontend-component-footer": "^14.6.0",
     "@edx/frontend-component-header": "^8.0.0",
