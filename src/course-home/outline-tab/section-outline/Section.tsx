@@ -19,12 +19,14 @@ interface Props {
     title: string;
     hideFromTOC: boolean;
   };
+  overallProgress: number;
 }
 
 const Section: React.FC<Props> = ({
   defaultOpen,
   expand,
   section,
+  overallProgress
 }) => {
   const intl = useIntl();
   const courseId = useContextId();
@@ -56,7 +58,7 @@ const Section: React.FC<Props> = ({
       <Collapsible
         className="mb-2"
         styling="card-lg"
-        title={<SectionTitle {...{ complete, hideFromTOC, title }} />}
+        title={<SectionTitle {...{ complete, hideFromTOC, title, overallProgress }} />}
         open={open}
         onToggle={() => { setOpen(!open); }}
         iconWhenClosed={(

@@ -9,12 +9,34 @@ interface Props {
   complete: boolean;
   hideFromTOC: boolean;
   title: string;
+  overallProgress: number;
 }
 
-const SectionTitle: React.FC<Props> = ({ complete, hideFromTOC, title }) => {
+const SectionTitle: React.FC<Props> = ({
+  complete, hideFromTOC, title, overallProgress,
+}) => {
   const intl = useIntl();
+  const safeProgress = Number.isFinite(overallProgress)
+    ? Math.min(100, Math.max(0, overallProgress))
+    : 0;
+
   return (
     <div className="d-flex row w-100 m-0">
+
+      <div className="progress_bar_and_score">
+        <div className="progress-bar-full">
+          <div
+            style={{ width: `${safeProgress}%` }}
+            className="progress-bar-grade"
+            role="progressbar"
+            aria-valuenow={safeProgress}
+            aria-valuemin={0}
+            aria-valuemax={100}
+          />
+        </div>
+        <h2 className="completed_percent">{safeProgress}%</h2>
+      </div>
+
       <div className="col-auto p-0">
         {complete ? (
           <Icon
@@ -41,19 +63,18 @@ const SectionTitle: React.FC<Props> = ({ complete, hideFromTOC, title }) => {
         </span>
       </div>
       {hideFromTOC && (
-      <div className="row">
-        {hideFromTOC && (
+        <div className="row">
           <span className="small d-flex align-content-end">
             <Icon className="mr-2" src={DisabledVisible} data-testid="hide-from-toc-section-icon" />
             <span data-testid="hide-from-toc-section-text">
               {intl.formatMessage(messages.hiddenSection)}
             </span>
           </span>
-        )}
-      </div>
+        </div>
       )}
     </div>
   );
 };
 
 export default SectionTitle;
+
