@@ -27,7 +27,6 @@ import WelcomeMessage from './widgets/WelcomeMessage';
 import ProctoringInfoPanel from './widgets/ProctoringInfoPanel';
 import AccountActivationAlert from '../../alerts/logistration-alert/AccountActivationAlert';
 import CourseHomeSectionOutlineSlot from '../../plugin-slots/CourseHomeSectionOutlineSlot';
-#import CourseHomeSectionProgressSlot from '../../plugin-slots/CourseHomeSectionProgressSlot';
 
 
 const OutlineTab = () => {
