@@ -1,8 +1,8 @@
 import React from 'react';
 import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import Section from '@src/course-home/outline-tab/section-outline/Section';
-import { useModel } from '../../../generic/model-store';
-import { useContextId } from '../../../data/hooks';
+import { useModel } from '../../generic/model-store';
+import { useContextId } from '../../data/hooks';
 
 interface SectionData {
   sequenceIds: string[];
