@@ -3,6 +3,8 @@ import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import Section from '@src/course-home/outline-tab/section-outline/Section';
 import { useModel } from '../../generic/model-store';
 import { useContextId } from '../../data/hooks';
+import './custom.css';
+
 
 interface SectionData {
   sequenceIds: string[];
@@ -30,11 +32,16 @@ const CourseHomeSectionOutlineSlot: React.FC<Props> = ({
     courseBlocks: { sequences },
   } = useModel('outline', courseId) as { courseBlocks: { sequences: Record<string, SequenceData> } };
 
+  console.log('Je suis dans le composant /plugin-slots/CourseHomeSectionOutlineSlot/index.tsx ')
+
   // Calcul de la progression, section par section
   const sectionProgressById: Record<string, number> = {};
 
   sectionIds.forEach((sectionId) => {
     const section = sections[sectionId];
+    console.log('section')
+    console.log(section)
+
     if (!section || !section.sequenceIds) {
       sectionProgressById[sectionId] = 0;
       return;

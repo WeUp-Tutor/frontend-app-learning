@@ -139,7 +139,7 @@ const OutlineTab = () => {
           <StartOrResumeCourseCard />
         </div>
 
-        <div className="col col-12 col-md-6">
+        <div className="col-12 col-lg-10 mx-auto">
           <AlertList
             topic="outline-course-alerts"
             className="mb-3"
