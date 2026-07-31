@@ -195,19 +195,15 @@ const TabPage = (props) => {
       <footer className="wrapper-footer">
         <div className="footer__inner">
           <div className="footer__logos">
-            <img
-              src="https://decouverte-metiers.sncf.hexafret.net/static/indigo/images/logo-white.png"
-              alt="Hexafret"
-              className="footer__logo footer__logo--hexafret"
-            />
-
-            <img
-              src="https://decouverte-metiers.sncf.hexafret.net/static/indigo/images/logo-rl_eu.png"
-              alt="Rail Logistics Europe"
-              className="footer__logo footer__logo--rle"
-            />
+          <div style={{display: 'flex', flexWrap: 'wrap', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+              <img src="https://decouverte-metiers.sncf.hexafret.net/static/indigo/images/logo-white.png" alt="Hexafret" className="footer__logo footer__logo--hexafret" />
+              <div style={{ fontSize: '12px', display: 'flex', flexWrap: 'nowrap', flexDirection: 'row', alignItems: 'center'}}>
+                <p>Une marque de :</p>
+                <img src="https://decouverte-metiers.sncf.hexafret.net/static/indigo/images/logo-rl_eu.png" alt="Rail Logistics Europe" className="footer__logo footer__logo--rle" />
+              </div>
+              <p style={{ textAlign: 'justify', fontSize: '12px', maxWidth: '75%'}}> Rail Logistics Europe est une société du groupe SNCF </p>
           </div>
-
+        </div>
           <div className="footer__separator" />
 
           <nav className="footer__nav" aria-label="Liens légaux">
