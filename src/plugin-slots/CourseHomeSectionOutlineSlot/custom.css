@@ -5,6 +5,8 @@
     --color-primary-soft:     #19a06a;
     --color-primary-light:    #bbffbe;
 
+    --pgn-color-primary-base: #1d5659;
+
     --color-secondary:        #ff7853;
     --color-secondary-hover:  #ff7853bb;
 
@@ -46,4 +48,9 @@
     border-radius: 5px;
     animation: fadeInLeft;
     animation-duration: 1.5s;
+}
+
+
+.collapsible-body .list-unstyled .text-monospace {
+    display: none !important;
 }

@@ -23,20 +23,6 @@ const SectionTitle: React.FC<Props> = ({
   return (
     <div className="d-flex row w-100 m-0">
 
-      <div className="progress_bar_and_score">
-        <div className="progress-bar-full">
-          <div
-            style={{ width: `${safeProgress}%` }}
-            className="progress-bar-grade"
-            role="progressbar"
-            aria-valuenow={safeProgress}
-            aria-valuemin={0}
-            aria-valuemax={100}
-          />
-        </div>
-        <h2 className="completed_percent">{safeProgress}%</h2>
-      </div>
-
       <div className="col-auto p-0">
         {complete ? (
           <Icon
@@ -62,6 +48,21 @@ const SectionTitle: React.FC<Props> = ({
           , {intl.formatMessage(complete ? messages.completedSection : messages.incompleteSection)}
         </span>
       </div>
+
+      <div className="progress_bar_and_score">
+        <div className="progress-bar-full">
+          <div
+            style={{ width: `${safeProgress}%` }}
+            className="progress-bar-grade"
+            role="progressbar"
+            aria-valuenow={safeProgress}
+            aria-valuemin={0}
+            aria-valuemax={100}
+          />
+        </div>
+        <h3 className="completed_percent">{safeProgress}%</h3>
+      </div>
+
       {hideFromTOC && (
         <div className="row">
           <span className="small d-flex align-content-end">
