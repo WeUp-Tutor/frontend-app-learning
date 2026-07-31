@@ -49,20 +49,6 @@ const SectionTitle: React.FC<Props> = ({
         </span>
       </div>
 
-      <div className="progress_bar_and_score">
-        <div className="progress-bar-full">
-          <div
-            style={{ width: `${safeProgress}%` }}
-            className="progress-bar-grade"
-            role="progressbar"
-            aria-valuenow={safeProgress}
-            aria-valuemin={0}
-            aria-valuemax={100}
-          />
-        </div>
-        <h3 className="completed_percent">{safeProgress}%</h3>
-      </div>
-
       {hideFromTOC && (
         <div className="row">
           <span className="small d-flex align-content-end">
