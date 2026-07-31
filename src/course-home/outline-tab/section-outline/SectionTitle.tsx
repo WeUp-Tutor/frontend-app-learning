@@ -22,10 +22,10 @@ const SectionTitle: React.FC<Props> = ({
 
   return (
     <>
-      <div className="d-flex row w-20 m-0">
+      <div className="d-flex row m-0">
         <img src="/custom-theme-media/images/illu_rogne.png" alt="image illustration sncf" className="illu-section" />
       </div>
-      <div className="d-flex row w-80 m-0">
+      <div className="d-flex row w-100 ml-5">
 
         <div className="col-auto p-0">
           {complete ? (
