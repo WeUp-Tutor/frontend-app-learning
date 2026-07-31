@@ -20,6 +20,10 @@
 }
 
 
+.illu-section {
+    width: 40px;
+}
+
 .progress_bar_and_score {
     width: 100%;
     display: flex;

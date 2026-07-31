@@ -21,59 +21,64 @@ const SectionTitle: React.FC<Props> = ({
     : 0;
 
   return (
-    <div className="d-flex row w-100 m-0">
-
-      <div className="col-auto p-0">
-        {complete ? (
-          <Icon
-            src={CheckCircle}
-            className="float-left mt-1 text-success"
-            aria-hidden="true"
-            svgAttrs={{ 'aria-label': intl.formatMessage(messages.completedSection) }}
-            size="sm"
-          />
-        ) : (
-          <Icon
-            src={CheckCircleOutline}
-            className="float-left mt-1 text-gray-400"
-            aria-hidden="true"
-            svgAttrs={{ 'aria-label': intl.formatMessage(messages.incompleteSection) }}
-            size="sm"
-          />
-        )}
+    <>
+      <div className="d-flex row w-20 m-0">
+        <img src="/custom-theme-media/images/illu_rogne.png" alt="image illustration sncf" className="illu-section" />
       </div>
-      <div className="col-7 ml-3 p-0 font-weight-bold text-dark-500">
-        <span className="align-middle col-6">{title}</span>
-        <span className="sr-only">
-          , {intl.formatMessage(complete ? messages.completedSection : messages.incompleteSection)}
-        </span>
-      </div>
+      <div className="d-flex row w-80 m-0">
 
-      <div className="progress_bar_and_score">
-        <div className="progress-bar-full">
-          <div
-            style={{ width: `${safeProgress}%` }}
-            className="progress-bar-grade"
-            role="progressbar"
-            aria-valuenow={safeProgress}
-            aria-valuemin={0}
-            aria-valuemax={100}
-          />
+        <div className="col-auto p-0">
+          {complete ? (
+            <Icon
+              src={CheckCircle}
+              className="float-left mt-1 text-success"
+              aria-hidden="true"
+              svgAttrs={{ 'aria-label': intl.formatMessage(messages.completedSection) }}
+              size="sm"
+            />
+          ) : (
+            <Icon
+              src={CheckCircleOutline}
+              className="float-left mt-1 text-gray-400"
+              aria-hidden="true"
+              svgAttrs={{ 'aria-label': intl.formatMessage(messages.incompleteSection) }}
+              size="sm"
+            />
+          )}
         </div>
-        <h3 className="completed_percent">{safeProgress}%</h3>
-      </div>
-
-      {hideFromTOC && (
-        <div className="row">
-          <span className="small d-flex align-content-end">
-            <Icon className="mr-2" src={DisabledVisible} data-testid="hide-from-toc-section-icon" />
-            <span data-testid="hide-from-toc-section-text">
-              {intl.formatMessage(messages.hiddenSection)}
-            </span>
+        <div className="col-7 ml-3 p-0 font-weight-bold text-dark-500">
+          <span className="align-middle col-6">{title}</span>
+          <span className="sr-only">
+            , {intl.formatMessage(complete ? messages.completedSection : messages.incompleteSection)}
           </span>
         </div>
-      )}
-    </div>
+
+        <div className="progress_bar_and_score">
+          <div className="progress-bar-full">
+            <div
+              style={{ width: `${safeProgress}%` }}
+              className="progress-bar-grade"
+              role="progressbar"
+              aria-valuenow={safeProgress}
+              aria-valuemin={0}
+              aria-valuemax={100}
+            />
+          </div>
+          <h3 className="completed_percent">{safeProgress}%</h3>
+        </div>
+
+        {hideFromTOC && (
+          <div className="row">
+            <span className="small d-flex align-content-end">
+              <Icon className="mr-2" src={DisabledVisible} data-testid="hide-from-toc-section-icon" />
+              <span data-testid="hide-from-toc-section-text">
+                {intl.formatMessage(messages.hiddenSection)}
+              </span>
+            </span>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
