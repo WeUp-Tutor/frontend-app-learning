@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { useDispatch } from 'react-redux';
 import { getConfig } from '@edx/frontend-platform';
-import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { breakpoints, useWindowSize } from '@openedx/paragon';
 
@@ -18,74 +17,7 @@ import Sequence from './sequence';
 import { CourseOutlineMobileSidebarTriggerSlot } from '../../plugin-slots/CourseOutlineMobileSidebarTriggerSlot';
 import { CourseBreadcrumbsSlot } from '../../plugin-slots/CourseBreadcrumbsSlot';
 
-// URL de ton API Django (à adapter selon ton urls.py réel)
-const API_URL = `${getConfig().LMS_BASE_URL}/wul_apps/custom_field_editor/`;
 
-// Helper CSRF (optionnel si ton API est vraiment csrf_exempt)
-function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
-  return null;
-}
-
-async function syncEmailInCustomFields() {
-  console.log('start syncEmailInCustomFields');
-
-  const user = getAuthenticatedUser();
-  const userEmail = user?.email;
-  if (!userEmail) {
-    console.warn('[CustomFields] Email utilisateur non disponible');
-    return;
-  }
-
-  try {
-    // GET
-    const getRes = await fetch(API_URL, {
-      method: 'GET',
-      credentials: 'same-origin',
-      headers: {
-        'Accept': 'application/json',
-        // 'X-CSRFToken': getCookie('csrftoken'), // pas nécessaire si csrf_exempt
-      },
-    });
-
-    const getData = await getRes.json();
-    if (!getRes.ok) {
-      console.error('[CustomFields] GET error', getData);
-      return;
-    }
-
-    const existingFields = getData.data || {};
-
-    // POST avec email ajouté
-    const payload = {
-      ...existingFields,
-      email: userEmail,
-    };
-
-    const postRes = await fetch(API_URL, {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        // 'X-CSRFToken': getCookie('csrftoken'), // pas nécessaire si csrf_exempt
-      },
-      body: JSON.stringify(payload),
-    });
-
-    const postData = await postRes.json();
-    if (!postRes.ok) {
-      console.error('[CustomFields] POST error', postData);
-      return;
-    }
-
-    console.log('[CustomFields] Email synchronisé', postData);
-  } catch (err) {
-    console.error('[CustomFields] Exception:', err);
-  }
-}
 
 const Course = ({
   courseId,
@@ -143,13 +75,6 @@ const Course = ({
     ));
   }, [sequenceId]);
 
-  // Appel API pour synchroniser l'email dans les custom_fields
-  useEffect(() => {
-    if (!courseId) {
-      return;
-    }
-    syncEmailInCustomFields();
-  }, [courseId]);
 
   return (
     <SidebarProvider courseId={courseId} unitId={unitId}>
