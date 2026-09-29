@@ -35,7 +35,7 @@
     "@edx/brand": "git+https://github.com/WeUp-Tutor/brand-openedx.git#brand/sncf-voyageurs",
     "@edx/browserslist-config": "1.5.1",
     "@edx/frontend-component-footer": "git+https://github.com/WeUp-Tutor/frontend-component-footer.git#mfe-footer/tutor-dev",
-    "@edx/frontend-component-header": "git+https://github.com/WeUp-Tutor/frontend-component-header.git#d372558a656f6fd5065e9cd53bf1f77f88decaa3",
+    "@edx/frontend-component-header": "git+https://github.com/WeUp-Tutor/frontend-component-header.git#3fa578edd8897614c3587ddbcdd34014ffe2634e",
     "@edx/frontend-lib-learning-assistant": "^2.24.0",
     "@edx/frontend-lib-special-exams": "^4.0.0",
     "@edx/frontend-platform": "^8.4.0",
