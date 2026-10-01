@@ -1,16 +1,16 @@
 
 
 :root {
-    --color-primary:          #1d5659;
-    --color-primary-soft:     #19a06a;
-    --color-primary-light:    #bbffbe;
+    --color-primary:          #7C1A00;
+    --color-primary-soft:     #FFBFA0;
+    --color-primary-light:    #FFDED6;
 
-    --pgn-color-primary-base: #1d5659;
+    --pgn-color-primary-base: #7C1A00;
 
-    --color-secondary:        #ff7853;
-    --color-secondary-hover:  #ff7853bb;
+    --color-secondary:        #FF6833;
+    --color-secondary-hover:  #ff6833bb;
 
-    --color-tertiary:         #2d0d33;
+    --color-tertiary:         #FFD2A9;
 
     --color-surface:          #ffffff;
     --color-surface-border:   #edf0f3;
