@@ -76,6 +76,48 @@ const Course = ({
   }, [sequenceId]);
 
 
+
+  useEffect(() => {
+//    const userLang = navigator.language || navigator.userLanguage || '';
+
+//    if (!userLang.toLowerCase().includes('fr')) {
+//      return undefined;
+//    }
+    console.log('look for fullscreen button')
+    const intervalId = setInterval(() => {
+      const fullscreenButton = document.querySelector(
+        '.enter-fullscreen',
+      );
+      const exitFullscreenButton = document.querySelector(
+        '.exit-fullscreen',
+      );
+
+      console.log(fullscreenButton)
+
+      if (fullscreenButton) {
+        fullscreenButton.innerText = fullscreenButton.innerText.replace(
+          'Fullscreen',
+          'Plein écran',
+        );
+      }
+
+      if (exitFullscreenButton) {
+        exitFullscreenButton.innerText = exitFullscreenButton.innerText.replace(
+          'Exit fullscreen',
+          'Quitter le plein écran',
+        );
+      }
+
+      if (fullscreenButton && exitFullscreenButton) {
+        clearInterval(intervalId);
+      }
+    }, 300);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+
+
   return (
     <SidebarProvider courseId={courseId} unitId={unitId}>
       <Helmet>
