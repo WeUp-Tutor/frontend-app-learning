@@ -188,9 +188,6 @@ const Sequence = ({
   const defaultContent = (
     <>
       <div className="sequence-container d-inline-flex flex-row w-100">
-        <p className="w-100" >Test de reload overnight 21 octobre</p>
-        <p className="w-100" >Test de reload overnight 21 octobre</p>
-        <p className="w-100" >Test de reload overnight 21 octobre</p>
         <CourseOutlineSidebarTriggerSlot
           sectionId={section ? section.id : null}
           sequenceId={sequenceId}
