@@ -32,7 +32,7 @@
     "url": "https://github.com/openedx/frontend-app-learning/issues"
   },
   "dependencies": {
-    "@edx/brand": "git+https://github.com/WeUp-Tutor/brand-openedx.git#brand/sncf-voyageurs",
+    "@edx/brand": "git+https://github.com/WeUp-Tutor/brand-openedx.git#brand/osac",
     "@edx/browserslist-config": "1.5.1",
     "@edx/frontend-component-footer": "git+https://github.com/WeUp-Tutor/frontend-component-footer.git#mfe-footer/tutor-dev",
     "@edx/frontend-component-header": "git+https://github.com/WeUp-Tutor/frontend-component-header.git#3fa578edd8897614c3587ddbcdd34014ffe2634e",
