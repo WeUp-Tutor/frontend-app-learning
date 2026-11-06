@@ -22,6 +22,7 @@
 
 .illu-section {
     width: 70px;
+    border-radius: 15px;
 }
 
 .progress_bar_and_score {
